@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestrictEditOnOwnerId</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+  ISCHANGED(OwnerId),
+  NOT(ISNEW()),
+  NOT($Profile.Name = &quot;System Administrator&quot;),
+  NOT($Profile.Name = &quot;Contract Manager&quot;),
+  OR(
+    AND(
+      ISBLANK(Country),
+      NOT($Profile.Name = &quot;System Administrator&quot;)
+    ),
+    AND(
+      ISPICKVAL(LeadSource, &apos;&apos;)
+    ),
+    AND(
+      ISBLANK(NumberOfEmployees),
+      NOT($Profile.Name = &quot;Contract Manager&quot;)
+    )
+  )
+)</errorConditionFormula>
+    <errorMessage>You cannot modify the Owner if there is no Country, LeadSource and Number of Employees filled in.</errorMessage>
+</ValidationRule>
